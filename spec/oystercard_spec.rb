@@ -41,23 +41,29 @@ describe Oystercard do
   
   end
  # ==============================================
- describe  "#touch in/out" do 
+  describe  "#touch in/out" do 
 
-  it "starts not in journey" do
-    expect(subject).not_to be_in_journey
+    it "starts not in journey" do
+      expect(subject).not_to be_in_journey
+    end
+
+    it "can touch_in" do 
+      subject.top_up(Oystercard::MAX_BALANCE)
+      subject.touch_in
+      expect(subject).to be_in_journey
+    end 
+
+    it "can touch_out" do
+      subject.top_up(Oystercard::MAX_BALANCE)
+      subject.touch_in
+      subject.touch_out
+      expect(subject).not_to be_in_journey
+    end
+
+    it "checks that card has enough balance" do
+      expect{subject.touch_in}.to raise_error "a minimum balance of £#{Oystercard::FAIR} is requried"
+    end
+
   end
 
-  it "can touch_in" do 
-    subject.touch_in
-    expect(subject).to be_in_journey
-  end 
-
-  it "can touch_out" do
-    subject.touch_in
-    subject.touch_out
-    expect(subject).not_to be_in_journey
-  end
-
- end
- 
 end
