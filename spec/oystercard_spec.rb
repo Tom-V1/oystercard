@@ -29,4 +29,16 @@ describe Oystercard do
 
   end
 
+  # ==============================================
+  describe "#deduct" do 
+
+    it {is_expected.to respond_to(:deduct).with(1).argument}
+
+    it "deducts balance" do 
+     subject.top_up(Oystercard::MAX_BALANCE)
+     expect{subject.deduct 5}.to change{subject.balance}.by -5
+    end 
+  
+  end
+
 end
