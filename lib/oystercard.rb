@@ -3,11 +3,13 @@ class Oystercard
 
   attr_reader :balance
   attr_reader :entry_station
+  attr_reader :journeys
   MAX_BALANCE = 90
   FAIR = 1
 
   def initialize
     @balance = 0
+    @journeys = Hash.new
   end
 
   def top_up(topup)
@@ -19,11 +21,16 @@ class Oystercard
   def touch_in(station)
     fail "a minimum balance of £#{FAIR} is requried" if balance_check
 
+    @journeys[:entry_station] = station
+
     @entry_station = station
   end 
 
-  def touch_out
+  def touch_out(station)
     deduct(FAIR)
+
+    @journeys[:exit_station] = station
+
     @entry_station = nil
   end
 
@@ -41,6 +48,8 @@ class Oystercard
     return true if amount  > MAX_BALANCE
     false
   end 
+
+  
 
   private
 
