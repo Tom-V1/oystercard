@@ -28,20 +28,10 @@ describe Oystercard do
     end 
 
   end
-
-  # ==============================================
-  # describe "#deduct" do 
-
-  #   it {is_expected.to respond_to(:deduct).with(1).argument}
-
-  #   it "deducts balance" do 
-  #    subject.top_up(Oystercard::MAX_BALANCE)
-  #    expect{subject.deduct 5}.to change{subject.balance}.by -5
-  #   end 
   
-  # end
  # ==============================================
   describe  "#touch in/out" do 
+    let(:station){double :station}
 
     it "starts not in journey" do
       expect(subject).not_to be_in_journey
@@ -49,25 +39,36 @@ describe Oystercard do
 
     it "can touch_in" do 
       subject.top_up(Oystercard::MAX_BALANCE)
-      subject.touch_in
+      subject.touch_in(station)
       expect(subject).to be_in_journey
     end 
 
     it "can touch_out" do
       subject.top_up(Oystercard::MAX_BALANCE)
-      subject.touch_in
+      subject.touch_in(station)
       subject.touch_out
       expect(subject).not_to be_in_journey
     end
 
     it "checks that card has enough balance" do
-      expect{subject.touch_in}.to raise_error "a minimum balance of £#{Oystercard::FAIR} is requried"
+      expect{subject.touch_in(station)}.to raise_error "a minimum balance of £#{Oystercard::FAIR} is requried"
     end
 
     it "deducts fair on touch_out" do 
       subject.top_up(Oystercard::MAX_BALANCE)
-      subject.touch_in
+      subject.touch_in(station)
       expect{subject.touch_out}.to change{subject.balance}.by -Oystercard::FAIR
+    end
+
+  end
+ # ==============================================
+  describe "#stations" do 
+    let(:station){double :station}
+
+    it "remembers entry station" do
+      subject.top_up(Oystercard::MAX_BALANCE)
+      subject.touch_in(station)
+      expect(subject.entry_station).to eq station
     end
 
   end
