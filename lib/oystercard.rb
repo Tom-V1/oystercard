@@ -49,8 +49,6 @@ class Oystercard
     false
   end 
 
-  
-
   private
 
   def deduct(amount)

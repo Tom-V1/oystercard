@@ -9,11 +9,7 @@ p card.touch_in("station_1")
 
 p card.touch_out("station_2")
 
-p card.touch_in("station_2")
 
-p card.touch_out("station_1")
-
-p card.journeys
 
 
 
