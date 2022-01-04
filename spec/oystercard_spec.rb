@@ -30,16 +30,16 @@ describe Oystercard do
   end
 
   # ==============================================
-  describe "#deduct" do 
+  # describe "#deduct" do 
 
-    it {is_expected.to respond_to(:deduct).with(1).argument}
+  #   it {is_expected.to respond_to(:deduct).with(1).argument}
 
-    it "deducts balance" do 
-     subject.top_up(Oystercard::MAX_BALANCE)
-     expect{subject.deduct 5}.to change{subject.balance}.by -5
-    end 
+  #   it "deducts balance" do 
+  #    subject.top_up(Oystercard::MAX_BALANCE)
+  #    expect{subject.deduct 5}.to change{subject.balance}.by -5
+  #   end 
   
-  end
+  # end
  # ==============================================
   describe  "#touch in/out" do 
 
@@ -62,6 +62,12 @@ describe Oystercard do
 
     it "checks that card has enough balance" do
       expect{subject.touch_in}.to raise_error "a minimum balance of £#{Oystercard::FAIR} is requried"
+    end
+
+    it "deducts fair on touch_out" do 
+      subject.top_up(Oystercard::MAX_BALANCE)
+      subject.touch_in
+      expect{subject.touch_out}.to change{subject.balance}.by -Oystercard::FAIR
     end
 
   end

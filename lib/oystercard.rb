@@ -2,7 +2,6 @@
 class Oystercard 
 
   attr_reader :balance
-  # attr_reader :in_journey?
   MAX_BALANCE = 90
   FAIR = 1
 
@@ -17,16 +16,13 @@ class Oystercard
     @balance += topup
   end 
 
-  def deduct(amount)
-    @balance -= amount
-  end 
-
   def touch_in
     fail "a minimum balance of £#{FAIR} is requried" if balance_check
     @journey = true
   end 
 
   def touch_out
+    deduct(FAIR)
     @journey = false
   end
 
@@ -43,6 +39,12 @@ class Oystercard
     amount = @balance + topup
     return true if amount  > MAX_BALANCE
     false
-  end
+  end 
+
+  private
+
+  def deduct(amount)
+    @balance -= amount
+  end 
 
 end
